@@ -1,0 +1,9 @@
+/database/database.sqlite
+/server.log
+/storage/sessions/*
+!/storage/sessions/.gitkeep
+/public/uploads/documents/*
+!/public/uploads/documents/.gitkeep
+test_router.php
+update_users.php
+.env
