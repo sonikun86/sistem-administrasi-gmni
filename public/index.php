@@ -165,7 +165,6 @@ switch ($path) {
         break;
 
     default:
-        var_dump($path, $uri, $scriptName, $_SERVER["SCRIPT_NAME"]);
         http_response_code(404);
         echo "<div style='font-family:sans-serif; text-align:center; padding:50px;'><h1>404 - Halaman Tidak Ditemukan</h1><p>Halaman yang Anda tuju tidak tersedia.</p><a href='" . App::baseUrl('') . "'>Kembali ke Dashboard</a></div>";
         break;

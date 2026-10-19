@@ -369,24 +369,9 @@ class LetterController
         Auth::requireAuth();
 
         $id = (int)($_GET['id'] ?? 0);
-        $letterModel = new Letter();
-        $letter = $letterModel->findWithDetails($id);
-
-        if (!$letter) {
-            View::flash('error', 'Surat tidak ditemukan.');
-            header('Location: ' . App::baseUrl('letters'));
-            exit;
-        }
-
-        $verifUrl = App::baseUrl('verifikasi?token=' . $letter['verification_token']);
-        $qrSvg = QrCode::svg($verifUrl, 140);
-
-        View::render('letters.print', [
-            'title' => 'Cetak Surat Resmi: ' . ($letter['reference_number'] ?: $letter['tracking_code']),
-            'letter' => $letter,
-            'qrSvg' => $qrSvg,
-            'verifUrl' => $verifUrl
-        ], null);
+        View::flash('info', 'Fitur pembuatan & cetak draf surat resmi otomatis sedang dinonaktifkan sementara untuk perancangan ulang. Sistem saat ini berfokus pada pengiriman berkas dan pengarsipan surat.');
+        header('Location: ' . ($id > 0 ? App::baseUrl('letters/show?id=' . $id) : App::baseUrl('letters')));
+        exit;
     }
 }
 

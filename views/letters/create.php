@@ -14,10 +14,10 @@ use App\Config\App;
                 &larr; Kembali ke Daftar Surat
             </a>
             <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">
-                <?= Auth::isDpk() ? 'Formulir Pengajuan Surat / Rekomendasi' : 'Pencatatan Surat Masuk & Keluar' ?>
+                <?= Auth::isDpk() ? 'Formulir Pengiriman / Pengajuan Surat' : 'Formulir Pengiriman & Pencatatan Surat' ?>
             </h1>
             <p class="text-xs text-slate-500 mt-0.5">
-                Surat yang diajukan akan diproses secara digital oleh pengurus Komisariat Besar GMNI UNISDA.
+                Surat yang dikirim akan diproses melalui alur administrasi dan terdokumentasi di buku arsip SIMAS.
             </p>
         </div>
     </div>
@@ -26,8 +26,8 @@ use App\Config\App;
     <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs text-amber-900 flex items-start space-x-3">
         <span class="text-lg">💡</span>
         <div>
-            <span class="font-bold block mb-0.5">Alur Administrasi Digital GMNI UNISDA:</span>
-            Pengurus DPK cukup mengunggah draf surat dan berkas pendukung (proposal/lampiran). Sekretariat Komisariat Besar akan memvalidasi format administrasi dan Ketua Komisariat Besar akan membubuhkan pengesahan resmi ber-QR Code tanpa perlu tatap muka langsung.
+            <span class="font-bold block mb-0.5">Alur Pengiriman & Pengarsipan Digital:</span>
+            Pengurus DPK dapat mengunggah berkas surat dan dokumen pendukung (proposal/lampiran). Sekretariat Komisariat Besar akan memvalidasi administrasi dan Ketua Komisariat Besar akan memberikan pengesahan serta lembar disposisi secara digital.
         </div>
     </div>
 
@@ -151,7 +151,7 @@ use App\Config\App;
                 </a>
                 <button type="submit" class="px-6 py-2.5 bg-[#8B0000] hover:bg-[#6B0000] text-white text-sm font-bold rounded-xl shadow-md transition flex items-center space-x-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    <span>Ajukan & Simpan ke Sistem</span>
+                    <span>Kirim & Simpan ke Arsip</span>
                 </button>
             </div>
         </form>

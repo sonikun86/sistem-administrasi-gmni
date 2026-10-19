@@ -19,7 +19,7 @@ use App\Config\App;
         <div>
             <a href="<?= App::baseUrl('letters/create') ?>" class="inline-flex items-center px-4 py-2.5 bg-[#8B0000] hover:bg-[#6B0000] text-white text-sm font-bold rounded-xl shadow transition space-x-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                <span><?= Auth::isDpk() ? 'Ajukan Surat Baru' : 'Input Surat Masuk / Keluar' ?></span>
+                <span><?= Auth::isDpk() ? 'Kirim / Ajukan Surat' : 'Kirim / Catat Surat' ?></span>
             </a>
         </div>
     </div>
