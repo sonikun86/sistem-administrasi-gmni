@@ -25,14 +25,22 @@ class AgendaController
         $month = $_GET['month'] ?? '';
         $komisariatId = $_GET['komisariat_id'] ?? '';
 
-        $filters = [
-            'direction' => $direction,
-        ];
+        $filters = [];
 
         if (Auth::isDpk()) {
-            $filters['komisariat_id'] = (string)Auth::dpkId();
-        } elseif (!empty($komisariatId)) {
-            $filters['komisariat_id'] = $komisariatId;
+            $dpkId = Auth::dpkId();
+            if ($direction === 'masuk') {
+                // Surat Masuk bagi DPK = Surat yang diterbitkan oleh Komisariat Besar
+                $filters['agenda_dpk_masuk'] = $dpkId;
+            } else {
+                // Surat Keluar bagi DPK = Surat yang diajukan oleh DPK ke Kombes
+                $filters['agenda_dpk_keluar'] = $dpkId;
+            }
+        } else {
+            $filters['direction'] = $direction;
+            if (!empty($komisariatId)) {
+                $filters['komisariat_id'] = $komisariatId;
+            }
         }
 
         $letters = $letterModel->getFiltered($filters, 200);
@@ -57,14 +65,22 @@ class AgendaController
         $direction = $_GET['direction'] ?? 'masuk';
         $komisariatId = $_GET['komisariat_id'] ?? '';
 
-        $filters = [
-            'direction' => $direction,
-        ];
+        $filters = [];
 
         if (Auth::isDpk()) {
-            $filters['komisariat_id'] = (string)Auth::dpkId();
-        } elseif (!empty($komisariatId)) {
-            $filters['komisariat_id'] = $komisariatId;
+            $dpkId = Auth::dpkId();
+            if ($direction === 'masuk') {
+                // Surat Masuk bagi DPK = Surat yang diterbitkan oleh Komisariat Besar
+                $filters['agenda_dpk_masuk'] = $dpkId;
+            } else {
+                // Surat Keluar bagi DPK = Surat yang diajukan oleh DPK ke Kombes
+                $filters['agenda_dpk_keluar'] = $dpkId;
+            }
+        } else {
+            $filters['direction'] = $direction;
+            if (!empty($komisariatId)) {
+                $filters['komisariat_id'] = $komisariatId;
+            }
         }
 
         $letters = $letterModel->getFiltered($filters, 500);

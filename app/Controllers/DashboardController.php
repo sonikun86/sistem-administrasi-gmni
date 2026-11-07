@@ -21,15 +21,16 @@ class DashboardController
 
         $filters = [];
         if (Auth::isDpk()) {
-            $filters['komisariat_id'] = Auth::dpkId();
+            $filters['user_dpk_id'] = Auth::dpkId();
         }
 
         // Statistik
         if (Auth::isDpk()) {
             $dpkId = (int)Auth::dpkId();
-            $totalLetters = $letterModel->count("komisariat_id = {$dpkId}");
+            $dpkCondition = "(komisariat_id = {$dpkId} OR ((direction = 'keluar' OR sender LIKE '%Komisariat Besar%') AND (target_dpk_id IS NULL OR target_dpk_id = 0 OR target_dpk_id = {$dpkId} OR recipient LIKE '%Seluruh DPK%' OR recipient LIKE '%Semua DPK%')))";
+            $totalLetters = $letterModel->count($dpkCondition);
             $pendingReview = $letterModel->count("komisariat_id = {$dpkId} AND status IN ('diajukan', 'diverifikasi')");
-            $approvedLetters = $letterModel->count("komisariat_id = {$dpkId} AND status IN ('disetujui', 'selesai')");
+            $approvedLetters = $letterModel->count("{$dpkCondition} AND status IN ('disetujui', 'selesai')");
             $revisionNeeded = $letterModel->count("komisariat_id = {$dpkId} AND status = 'perlu_revisi'");
         } else {
             $totalLetters = $letterModel->count();

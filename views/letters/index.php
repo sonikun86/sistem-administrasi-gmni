@@ -133,9 +133,21 @@ use App\Config\App;
                                     <?php endif; ?>
                                 </td>
                                 <td class="px-5 py-3.5 whitespace-nowrap">
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase <?= $l['direction'] === 'masuk' ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'bg-teal-50 text-teal-700 border border-teal-200' ?>">
-                                        <?= $l['direction'] === 'masuk' ? '↓ Masuk' : '↑ Keluar' ?>
-                                    </span>
+                                    <?php if (Auth::isDpk()): ?>
+                                        <?php if ($l['direction'] === 'keluar' || str_contains($l['sender'], 'Komisariat Besar') || (int)($l['komisariat_id'] ?? 0) === 1): ?>
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-100 text-blue-800 border border-blue-200">
+                                                ↓ Masuk dari Kombes
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                                ↑ Pengajuan DPK
+                                            </span>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase <?= $l['direction'] === 'masuk' ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'bg-teal-50 text-teal-700 border border-teal-200' ?>">
+                                            <?= $l['direction'] === 'masuk' ? '↓ Masuk (DPK)' : '↑ Keluar (Kombes)' ?>
+                                        </span>
+                                    <?php endif; ?>
                                 </td>
                                 <td class="px-5 py-3.5 whitespace-nowrap">
                                     <span class="font-semibold text-slate-900"><?= View::e($l['sender']) ?></span>

@@ -89,10 +89,30 @@ use App\Config\App;
                     <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                         Penerima / Tujuan Surat <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="recipient" required 
-                           value="<?= Auth::isDpk() ? 'Komisariat Besar GMNI UNISDA' : 'Seluruh DPK GMNI se-UNISDA' ?>"
-                           placeholder="Contoh: Komisariat Besar GMNI UNISDA / Dekan FAI / Rektor UNISDA"
-                           class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-[#8B0000] outline-none">
+                    <?php if (Auth::isDpk()): ?>
+                        <input type="text" name="recipient" required readonly
+                               value="Komisariat Besar GMNI UNISDA"
+                               class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 font-bold text-sm">
+                    <?php else: ?>
+                        <div class="space-y-2">
+                            <select name="target_dpk_id" onchange="const sel = this.options[this.selectedIndex]; const recInput = document.getElementById('recipient_input'); if(sel.value === '0') { recInput.value = 'Seluruh DPK GMNI se-UNISDA'; } else if (sel.dataset.name) { recInput.value = sel.dataset.name; } else { recInput.value = ''; recInput.focus(); }" 
+                                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-[#8B0000] outline-none font-semibold bg-white">
+                                <option value="0" data-name="Seluruh DPK GMNI se-UNISDA">📢 Seluruh DPK se-UNISDA (Masuk ke Semua DPK)</option>
+                                <?php foreach ($komisariats as $k): ?>
+                                    <?php if ($k['code'] !== 'KOM-BESAR'): ?>
+                                        <option value="<?= $k['id'] ?>" data-name="<?= View::e($k['name']) ?>">
+                                            🎯 Khusus <?= View::e($k['name']) ?> (<?= View::e($k['faculty']) ?>)
+                                        </option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                                <option value="external" data-name="">🌐 Pihak Eksternal Kampus / Lainnya (Kustom)</option>
+                            </select>
+                            <input type="text" id="recipient_input" name="recipient" required 
+                                   value="Seluruh DPK GMNI se-UNISDA"
+                                   placeholder="Ketik nama instansi / penerima tujuan..."
+                                   class="w-full px-3.5 py-2 text-xs rounded-lg border border-slate-200 text-slate-700 focus:ring-1 focus:ring-[#8B0000] outline-none">
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 

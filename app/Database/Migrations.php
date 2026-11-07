@@ -74,6 +74,7 @@ class Migrations
                 reference_number VARCHAR(120) NULL, -- Official nomor surat
                 category_id INTEGER NOT NULL,
                 komisariat_id INTEGER NULL, -- DPK pengirim (jika dari DPK)
+                target_dpk_id INTEGER NULL, -- DPK tujuan (jika dari Kombes khusus untuk DPK tertentu, NULL/0 = seluruh DPK)
                 direction VARCHAR(20) NOT NULL, -- 'masuk', 'keluar'
                 sender VARCHAR(150) NOT NULL,
                 recipient VARCHAR(150) NOT NULL,

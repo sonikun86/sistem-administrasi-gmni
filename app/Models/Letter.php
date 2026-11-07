@@ -36,7 +36,27 @@ class Letter extends Model
             $params['status'] = $filters['status'];
         }
 
-        if (!empty($filters['komisariat_id'])) {
+        // Filter khusus Buku Agenda DPK (Masuk & Keluar)
+        if (!empty($filters['agenda_dpk_masuk'])) {
+            $sql .= " AND (
+                (l.direction = 'keluar' OR l.sender LIKE '%Komisariat Besar%')
+                AND (l.target_dpk_id IS NULL OR l.target_dpk_id = 0 OR l.target_dpk_id = :agenda_dpk_masuk OR l.recipient LIKE '%Seluruh DPK%' OR l.recipient LIKE '%Semua DPK%')
+            )";
+            $params['agenda_dpk_masuk'] = $filters['agenda_dpk_masuk'];
+        } elseif (!empty($filters['agenda_dpk_keluar'])) {
+            $sql .= " AND l.komisariat_id = :agenda_dpk_keluar";
+            $params['agenda_dpk_keluar'] = $filters['agenda_dpk_keluar'];
+        } elseif (!empty($filters['user_dpk_id'])) {
+            // Filter Arsip / Dashboard DPK: Surat yang diajukan DPK ATAU Surat dari Kombes untuk DPK
+            $sql .= " AND (
+                l.komisariat_id = :user_dpk_id
+                OR (
+                    (l.direction = 'keluar' OR l.sender LIKE '%Komisariat Besar%')
+                    AND (l.target_dpk_id IS NULL OR l.target_dpk_id = 0 OR l.target_dpk_id = :user_dpk_id OR l.recipient LIKE '%Seluruh DPK%' OR l.recipient LIKE '%Semua DPK%')
+                )
+            )";
+            $params['user_dpk_id'] = $filters['user_dpk_id'];
+        } elseif (!empty($filters['komisariat_id'])) {
             $sql .= " AND l.komisariat_id = :komisariat_id";
             $params['komisariat_id'] = $filters['komisariat_id'];
         }

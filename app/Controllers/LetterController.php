@@ -35,9 +35,9 @@ class LetterController
             'end_date' => $_GET['end_date'] ?? '',
         ];
 
-        // Jika DPK, filter hanya surat DPK-nya sendiri ATAU surat keluar resmi Komisariat Besar
+        // Jika DPK, tampilkan surat DPK-nya sendiri DAN seluruh surat keluar resmi dari Komisariat Besar
         if (Auth::isDpk()) {
-            $filters['komisariat_id'] = (string)Auth::dpkId();
+            $filters['user_dpk_id'] = (string)Auth::dpkId();
         }
 
         $letters = $letterModel->getFiltered($filters, 100);
@@ -93,6 +93,7 @@ class LetterController
         $komisariatId = null;
         $sender = '';
 
+        $targetDpkId = null;
         if (Auth::isDpk()) {
             $komisariatId = Auth::dpkId();
             $komisariat = (new Komisariat())->find($komisariatId);
@@ -100,9 +101,14 @@ class LetterController
             $direction = 'masuk'; // Dari DPK ke Komisariat Besar
         } else {
             // Pengurus Komisariat Besar
+            if (!empty($_POST['target_dpk_id']) && is_numeric($_POST['target_dpk_id'])) {
+                $tid = (int)$_POST['target_dpk_id'];
+                $targetDpkId = $tid > 0 ? $tid : null; // 0 atau null = masuk ke seluruh DPK se-UNISDA
+            }
+
             if ($direction === 'keluar') {
                 $sender = 'Komisariat Besar GMNI UNISDA';
-                $komisariatId = (new Komisariat())->findByCode('KOM-BESAR')['id'] ?? null;
+                $komisariatId = (new Komisariat())->findByCode('KOM-BESAR')['id'] ?? 1;
             } else {
                 $sender = trim($_POST['sender'] ?? 'Eksternal Kampus / DPC');
                 $komisariatId = !empty($_POST['komisariat_id']) ? (int)$_POST['komisariat_id'] : null;
@@ -153,6 +159,7 @@ class LetterController
             'reference_number' => $refNumber,
             'category_id' => $categoryId,
             'komisariat_id' => $komisariatId,
+            'target_dpk_id' => $targetDpkId,
             'direction' => $direction,
             'sender' => $sender,
             'recipient' => $recipient,
@@ -181,6 +188,37 @@ class LetterController
         exit;
     }
 
+    public static function canAccessLetter(array $letter): bool
+    {
+        if (Auth::isKomisariatBesar()) {
+            return true;
+        }
+
+        if (Auth::isDpk()) {
+            $dpkId = Auth::dpkId();
+            // Surat dibuat oleh DPK sendiri
+            if ((int)($letter['komisariat_id'] ?? 0) === $dpkId) {
+                return true;
+            }
+            // Surat dari Komisariat Besar (ditujukan ke semua DPK atau khusus DPK ini)
+            $isFromKombes = ($letter['direction'] === 'keluar') || 
+                            str_contains($letter['sender'] ?? '', 'Komisariat Besar') ||
+                            (int)($letter['komisariat_id'] ?? 0) === 1;
+            
+            if ($isFromKombes) {
+                $targetId = !empty($letter['target_dpk_id']) ? (int)$letter['target_dpk_id'] : null;
+                if ($targetId === null || $targetId === 0 || $targetId === $dpkId) {
+                    return true;
+                }
+                if (str_contains($letter['recipient'] ?? '', 'Seluruh DPK') || str_contains($letter['recipient'] ?? '', 'Semua DPK')) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public function show(): void
     {
         Auth::requireAuth();
@@ -195,14 +233,11 @@ class LetterController
             exit;
         }
 
-        // Cek izin akses jika user adalah DPK
-        if (Auth::isDpk()) {
-            $dpkId = Auth::dpkId();
-            if ($letter['komisariat_id'] && (int)$letter['komisariat_id'] !== $dpkId && $letter['direction'] === 'masuk') {
-                View::flash('error', 'Anda tidak memiliki akses ke surat DPK lain.');
-                header('Location: ' . App::baseUrl('letters'));
-                exit;
-            }
+        // Cek izin akses
+        if (!self::canAccessLetter($letter)) {
+            View::flash('error', 'Anda tidak memiliki hak akses untuk melihat surat ini.');
+            header('Location: ' . App::baseUrl('letters'));
+            exit;
         }
 
         $timeline = (new LetterTimeline())->getByLetter($id);
@@ -378,14 +413,11 @@ class LetterController
             exit;
         }
 
-        // Cek izin akses jika user adalah DPK
-        if (Auth::isDpk()) {
-            $dpkId = Auth::dpkId();
-            if ($letter['komisariat_id'] && (int)$letter['komisariat_id'] !== $dpkId && $letter['direction'] === 'masuk') {
-                View::flash('error', 'Anda tidak memiliki akses ke surat DPK lain.');
-                header('Location: ' . App::baseUrl('letters'));
-                exit;
-            }
+        // Cek izin akses
+        if (!self::canAccessLetter($letter)) {
+            View::flash('error', 'Anda tidak memiliki hak akses untuk mencetak surat ini.');
+            header('Location: ' . App::baseUrl('letters'));
+            exit;
         }
 
         $verifUrl = App::baseUrl('verifikasi?token=' . $letter['verification_token']);
@@ -412,14 +444,11 @@ class LetterController
             exit;
         }
 
-        // Cek izin akses jika user adalah DPK
-        if (Auth::isDpk()) {
-            $dpkId = Auth::dpkId();
-            if ($letter['komisariat_id'] && (int)$letter['komisariat_id'] !== $dpkId && $letter['direction'] === 'masuk') {
-                View::flash('error', 'Anda tidak memiliki akses ke berkas surat DPK lain.');
-                header('Location: ' . App::baseUrl('letters'));
-                exit;
-            }
+        // Cek izin akses
+        if (!self::canAccessLetter($letter)) {
+            View::flash('error', 'Anda tidak memiliki hak akses untuk mengunduh berkas surat ini.');
+            header('Location: ' . App::baseUrl('letters'));
+            exit;
         }
 
         $filePath = __DIR__ . '/../../public/' . ltrim($letter['attachment_path'], '/');
