@@ -8,9 +8,9 @@
 ## 📌 Latar Belakang & Solusi
 
 Sistem ini dibangun untuk menyelesaikan permasalahan birokrasi dan korespondensi di lingkungan **Komisariat Besar GMNI UNISDA** (Universitas Islam Darul 'Ulum Lamongan) dengan 3 komisariat tingkat fakultas di bawah naungannya:
-1. **DPK GMNI Hatta** (Fakultas Hukum & FISIP)
+1. **DPK GMNI Hatta** (Fakultas Ekonomi dan Bisnis / FEB)
 2. **DPK GMNI Ficus Benjamina** (Fakultas Pertanian, Peternakan & Sains Teknologi/MIPA)
-3. **DPK GMNI Brahmana** (Fakultas Agama Islam & FKIP)
+3. **DPK GMNI Brahmana** (Fakultas Hukum & FISIP)
 
 ### Masalah yang Diselesaikan:
 - **Menghilangkan ketergantungan tatap muka fisik**: Pengurus DPK tidak perlu lagi membuang waktu dan menunda kegiatan organisasi hanya untuk menemui pengurus Komisariat Besar secara langsung demi meminta nomor surat, verifikasi berkas, surat rekomendasi, atau tanda tangan pengesahan SK.
@@ -20,35 +20,38 @@ Sistem ini dibangun untuk menyelesaikan permasalahan birokrasi dan korespondensi
 
 ---
 
-## 🚀 Cara Menjalankan di Komputer Lokal
+## 🚀 Cara Menjalankan (Zero Setup & Langsung Jalan)
 
-1. Buka terminal pada folder proyek ini:
+Sistem ini dirancang mandiri tanpa butuh Composer atau Node.js / NPM. Database SQLite dan seluruh tabel beserta akun pimpinan akan **dibuat otomatis** saat pertama kali aplikasi dijalankan.
+
+### Langkah-langkah:
+1. Clone repositori:
    ```bash
-   cd /home/laksana/Documents/sistem-manajemen-surat
+   git clone https://github.com/sonikun86/sistem-administrasi-gmni.git
+   cd sistem-administrasi-gmni
    ```
-2. Jalankan server web bawaan PHP:
+2. Jalankan server lokal bawaan PHP (PHP 8.2 atau 8.3):
    ```bash
    php -S localhost:8000 server.php
    ```
 3. Buka browser dan akses:
    ```
-   http://localhost:8000
+   http://localhost:8000/login
    ```
 
 ---
 
 ## 🔑 Akun & Kredensial Pengguna
 
-Semua akun di bawah ini menggunakan kata sandi default: **`password123`**  
-*(Disediakan juga tombol **Simulasi Akun Cepat (1-Klik)** di bagian atas antarmuka dan halaman login)*:
+Semua akun di bawah ini menggunakan kata sandi default: **`password123`**
 
-| Peran / Jabatan | Email Akun | Deskripsi Wewenang |
-| :--- | :--- | :--- |
-| **Ketua Komisariat Besar** | `ketua.besar@gmni-unisda.or.id` | Pengesahan akhir, persetujuan SK/Rekomendasi, dan pengisian Lembar Disposisi |
-| **Sekretaris Besar** | `sekretaris.besar@gmni-unisda.or.id` | Verifikasi kelengkapan berkas, alokasi nomor surat resmi GMNI, pengembalian revisi |
-| **Pengurus DPK GMNI Hatta** | `dpk.hatta@gmni-unisda.or.id` | Pengajuan surat, tracking status, dan download surat resmi DPK Hatta |
-| **Pengurus DPK GMNI Ficus Benjamina** | `dpk.ficus@gmni-unisda.or.id` | Pengajuan surat, tracking status, dan download surat resmi DPK Ficus |
-| **Pengurus DPK GMNI Brahmana** | `dpk.brahmana@gmni-unisda.or.id` | Pengajuan surat, tracking status, dan download surat resmi DPK Brahmana |
+| Jabatan / Instansi | Nama Pimpinan | Email Akun | Deskripsi Wewenang |
+| :--- | :--- | :--- | :--- |
+| **Ketua Komisariat Besar** | Bung Irgi Alamsyah Ali Alhana | `ketua.besar@gmni-unisda.or.id` | Pengesahan akhir, persetujuan SK/Rekomendasi, dan pengisian Lembar Disposisi |
+| **Sekretaris Besar** | Bung Toni Ardiansyah | `sekretaris.besar@gmni-unisda.or.id` | Verifikasi kelengkapan berkas, alokasi nomor surat resmi GMNI, pengembalian revisi |
+| **DPK GMNI Hatta (FEB)** | Bung Wahyu Yulianto | `dpk.hatta@gmni-unisda.or.id` | Pengajuan surat, tracking status, dan cetak dokumen resmi DPK Hatta |
+| **DPK GMNI Ficus Benjamina (MIPA)** | Sarinah Ana Syauki Firdaus | `dpk.ficus@gmni-unisda.or.id` | Pengajuan surat, tracking status, dan cetak dokumen resmi DPK Ficus |
+| **DPK GMNI Brahmana (FH & FISIP)** | Sarinah Aqila | `dpk.brahmana@gmni-unisda.or.id` | Pengajuan surat, tracking status, dan cetak dokumen resmi DPK Brahmana |
 
 ---
 
