@@ -34,8 +34,8 @@ class Seeders
             $kHattaId = $komisariatModel->create([
                 'code' => 'HATTA',
                 'name' => 'DPK GMNI Hatta',
-                'faculty' => 'Fakultas Hukum & Fakultas Ilmu Sosial dan Ilmu Politik (FISIP)',
-                'description' => 'Komisariat Tingkat Fakultas bidang Hukum dan Ilmu Sosial',
+                'faculty' => 'Fakultas Ekonomi dan Bisnis (FEB)',
+                'description' => 'Komisariat Tingkat Fakultas bidang Ekonomi dan Bisnis',
                 'contact_person' => 'Bung Wahyu Yulianto (Ketua DPK)',
                 'phone' => '081234567891',
                 'is_active' => 1
@@ -46,7 +46,7 @@ class Seeders
                 'name' => 'DPK GMNI Ficus Benjamina',
                 'faculty' => 'Fakultas Pertanian, Peternakan & Sains Teknologi (MIPA)',
                 'description' => 'Komisariat Tingkat Fakultas bidang Agrokompleks dan Sains Teknologi',
-                'contact_person' => 'Sarinah Ana Syauki Virda (Ketua DPK)',
+                'contact_person' => 'Sarinah Ana Syauki Firdaus (Ketua DPK)',
                 'phone' => '081234567892',
                 'is_active' => 1
             ]);
@@ -54,8 +54,8 @@ class Seeders
             $kBrahmanaId = $komisariatModel->create([
                 'code' => 'BRAHMANA',
                 'name' => 'DPK GMNI Brahmana',
-                'faculty' => 'Fakultas Agama Islam (FAI) & FKIP',
-                'description' => 'Komisariat Tingkat Fakultas bidang Agama Islam dan Pendidikan Keguruan',
+                'faculty' => 'Fakultas Hukum & Fakultas Ilmu Sosial dan Ilmu Politik (FH & FISIP)',
+                'description' => 'Komisariat Tingkat Fakultas bidang Hukum dan Ilmu Sosial Politik',
                 'contact_person' => 'Sarinah Aqila (Ketua DPK)',
                 'phone' => '081234567893',
                 'is_active' => 1
@@ -103,7 +103,7 @@ class Seeders
             // DPK GMNI Hatta
             $dpkHattaUserId = $userModel->create([
                 'komisariat_id' => $kHattaId,
-                'name' => 'M. Wahyu Yulianto',
+                'name' => 'Wahyu Yulianto',
                 'email' => 'dpk.hatta@gmni-unisda.or.id',
                 'password' => $defaultPassword,
                 'role' => 'dpk',
@@ -145,7 +145,7 @@ class Seeders
             // DPK GMNI Brahmana
             $dpkBrahmanaUserId = $userModel->create([
                 'komisariat_id' => $kBrahmanaId,
-                'name' => 'Aqila Nur Aini',
+                'name' => 'Aqila',
                 'email' => 'dpk.brahmana@gmni-unisda.or.id',
                 'password' => $defaultPassword,
                 'role' => 'dpk',

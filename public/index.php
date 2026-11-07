@@ -84,9 +84,6 @@ switch ($path) {
         (new \App\Controllers\AuthController())->logout();
         break;
 
-    case 'auth/quick':
-        (new \App\Controllers\AuthController())->quickLogin();
-        break;
 
     case 'letters':
         (new \App\Controllers\LetterController())->index();
@@ -130,6 +127,10 @@ switch ($path) {
 
     case 'letters/print':
         (new \App\Controllers\LetterController())->print();
+        break;
+
+    case 'letters/download':
+        (new \App\Controllers\LetterController())->download();
         break;
 
     case 'approvals':

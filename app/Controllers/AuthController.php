@@ -63,27 +63,9 @@ class AuthController
 
     public function quickLogin(): void
     {
-        // Demo switcher for testing convenience
-        $role = $_GET['role'] ?? 'ketua_besar';
-        $userModel = new User();
-
-        $email = match ($role) {
-            'ketua_besar' => 'ketua.besar@gmni-unisda.or.id',
-            'sekretaris_besar' => 'sekretaris.besar@gmni-unisda.or.id',
-            'dpk_hatta' => 'dpk.hatta@gmni-unisda.or.id',
-            'dpk_ficus' => 'dpk.ficus@gmni-unisda.or.id',
-            'dpk_brahmana' => 'dpk.brahmana@gmni-unisda.or.id',
-            default => 'ketua.besar@gmni-unisda.or.id'
-        };
-
-        $user = $userModel->findByEmail($email);
-        if ($user) {
-            $fullUser = $userModel->findWithKomisariat((int)$user['id']);
-            Auth::login($fullUser ?: $user);
-            View::flash('success', 'Beralih ke akun: ' . $user['name']);
-        }
-
-        header('Location: ' . App::baseUrl('dashboard'));
+        // Fitur quick login telah dinonaktifkan demi keamanan akun pimpinan
+        View::flash('warning', 'Fitur beralih cepat telah dinonaktifkan demi keamanan akun organisasi.');
+        header('Location: ' . App::baseUrl('login'));
         exit;
     }
 

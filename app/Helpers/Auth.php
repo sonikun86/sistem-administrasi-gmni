@@ -10,15 +10,15 @@ class Auth
 {
     public static function init(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
             $sessionDir = __DIR__ . '/../../storage/sessions';
             if (!is_dir($sessionDir)) {
                 @mkdir($sessionDir, 0777, true);
             }
             if (is_dir($sessionDir) && is_writable($sessionDir)) {
-                session_save_path($sessionDir);
+                @session_save_path($sessionDir);
             }
-            session_start();
+            @session_start();
         }
     }
 

@@ -67,18 +67,8 @@ $currentUri = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
                     </a>
                 </div>
 
-                <!-- Right Menu: Quick Account Switcher & User Profile -->
+                <!-- Right Menu: User Profile -->
                 <div class="flex items-center space-x-3">
-                    <!-- Quick Demo Role Switcher -->
-                    <div class="hidden lg:flex items-center bg-[#6B0000] px-2 py-1 rounded-lg text-xs border border-red-900/40">
-                        <span class="text-amber-300 font-semibold mr-2">Simulasi Akun:</span>
-                        <a href="<?= App::baseUrl('auth/quick?role=ketua_besar') ?>" class="px-2 py-0.5 rounded hover:bg-red-800 text-white <?= (Auth::isKetuaBesar() ? 'bg-[#8B0000] font-bold text-amber-200 shadow' : 'text-gray-300') ?>">Ketua</a>
-                        <a href="<?= App::baseUrl('auth/quick?role=sekretaris_besar') ?>" class="px-2 py-0.5 rounded hover:bg-red-800 text-white <?= (Auth::isSekretarisBesar() ? 'bg-[#8B0000] font-bold text-amber-200 shadow' : 'text-gray-300') ?>">Sekretaris</a>
-                        <a href="<?= App::baseUrl('auth/quick?role=dpk_hatta') ?>" class="px-2 py-0.5 rounded hover:bg-red-800 text-white <?= ($currentUser['email'] ?? '') === 'dpk.hatta@gmni-unisda.or.id' ? 'bg-[#8B0000] font-bold text-amber-200 shadow' : 'text-gray-300' ?>">DPK Hatta</a>
-                        <a href="<?= App::baseUrl('auth/quick?role=dpk_ficus') ?>" class="px-2 py-0.5 rounded hover:bg-red-800 text-white <?= ($currentUser['email'] ?? '') === 'dpk.ficus@gmni-unisda.or.id' ? 'bg-[#8B0000] font-bold text-amber-200 shadow' : 'text-gray-300' ?>">DPK Ficus</a>
-                        <a href="<?= App::baseUrl('auth/quick?role=dpk_brahmana') ?>" class="px-2 py-0.5 rounded hover:bg-red-800 text-white <?= ($currentUser['email'] ?? '') === 'dpk.brahmana@gmni-unisda.or.id' ? 'bg-[#8B0000] font-bold text-amber-200 shadow' : 'text-gray-300' ?>">DPK Brahmana</a>
-                    </div>
-
                     <!-- User Profile Dropdown -->
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" class="flex items-center space-x-2 p-1.5 rounded-lg hover:bg-[#6B0000] transition">

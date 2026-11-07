@@ -81,7 +81,7 @@ class ApprovalController
             );
 
             View::flash('success', "Surat berhasil diverifikasi dengan nomor resmi: {$newRefNumber}");
-        } elseif ($action === 'request_revision') {
+        } elseif ($action === 'revision' || $action === 'request_revision') {
             // Tindakan Sekretaris: Minta revisi berkas ke DPK
             if ($notes === '') {
                 View::flash('error', 'Harap sertakan catatan revisi yang jelas untuk pengurus DPK.');

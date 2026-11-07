@@ -32,31 +32,41 @@ use App\Config\App;
         </button>
     </form>
 
-    <!-- Quick Access Demo Buttons -->
-    <div class="mt-6 pt-6 border-t border-slate-100">
-        <p class="text-xs font-bold text-slate-500 uppercase tracking-wider text-center mb-3">Pilih Cepat Akun Demo (1-Klik Masuk):</p>
-        <div class="grid grid-cols-1 gap-2 text-xs">
-            <a href="<?= App::baseUrl('auth/quick?role=ketua_besar') ?>" class="p-2.5 rounded-lg border border-red-200 bg-red-50 hover:bg-red-100 text-red-950 font-semibold flex items-center justify-between transition">
-                <span>★ Ketua Komisariat Besar</span>
-                <span class="text-[10px] bg-red-200 text-red-800 px-2 py-0.5 rounded">Disposisi & SK</span>
-            </a>
-            <a href="<?= App::baseUrl('auth/quick?role=sekretaris_besar') ?>" class="p-2.5 rounded-lg border border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-950 font-semibold flex items-center justify-between transition">
-                <span>✦ Sekretaris Besar</span>
-                <span class="text-[10px] bg-amber-200 text-amber-800 px-2 py-0.5 rounded">Verifikasi & No. Surat</span>
-            </a>
-            <div class="grid grid-cols-3 gap-1.5 pt-1">
-                <a href="<?= App::baseUrl('auth/quick?role=dpk_hatta') ?>" class="p-2 text-center rounded-lg border border-slate-200 hover:bg-slate-100 font-medium text-slate-800 transition">
-                    DPK Hatta
-                </a>
-                <a href="<?= App::baseUrl('auth/quick?role=dpk_ficus') ?>" class="p-2 text-center rounded-lg border border-slate-200 hover:bg-slate-100 font-medium text-slate-800 transition">
-                    DPK Ficus
-                </a>
-                <a href="<?= App::baseUrl('auth/quick?role=dpk_brahmana') ?>" class="p-2 text-center rounded-lg border border-slate-200 hover:bg-slate-100 font-medium text-slate-800 transition">
-                    DPK Brahmana
-                </a>
+    <!-- Informational Card: Official Accounts -->
+    <div class="mt-6 pt-5 border-t border-slate-100">
+        <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200 text-xs">
+            <div class="flex items-center space-x-2 text-slate-700 font-bold mb-2">
+                <svg class="w-4 h-4 text-[#8B0000]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                <span>Akses Masuk Terlindungi & Terpisah</span>
             </div>
+            <p class="text-[11px] text-slate-500 mb-2 leading-relaxed">
+                Setiap ketua dan pengurus memiliki akses akun masing-masing. Masukkan email dan kata sandi Anda untuk melanjutkan.
+            </p>
+            <div class="space-y-1 text-[11px] text-slate-600 bg-white p-2.5 rounded-lg border border-slate-200">
+                <div class="font-semibold text-slate-700">Daftar Akun Resmi:</div>
+                <div class="flex justify-between items-center py-0.5 border-b border-slate-100">
+                    <span>Ketua Komisariat Besar:</span>
+                    <button type="button" onclick="document.getElementById('email').value='ketua.besar@gmni-unisda.or.id'; document.getElementById('password').focus();" class="text-[#8B0000] hover:underline font-mono text-[10px]">ketua.besar@gmni-unisda.or.id</button>
+                </div>
+                <div class="flex justify-between items-center py-0.5 border-b border-slate-100">
+                    <span>Sekretaris Besar:</span>
+                    <button type="button" onclick="document.getElementById('email').value='sekretaris.besar@gmni-unisda.or.id'; document.getElementById('password').focus();" class="text-[#8B0000] hover:underline font-mono text-[10px]">sekretaris.besar@gmni-unisda.or.id</button>
+                </div>
+                <div class="flex justify-between items-center py-0.5 border-b border-slate-100">
+                    <span>DPK GMNI Hatta:</span>
+                    <button type="button" onclick="document.getElementById('email').value='dpk.hatta@gmni-unisda.or.id'; document.getElementById('password').focus();" class="text-[#8B0000] hover:underline font-mono text-[10px]">dpk.hatta@gmni-unisda.or.id</button>
+                </div>
+                <div class="flex justify-between items-center py-0.5 border-b border-slate-100">
+                    <span>DPK GMNI Ficus:</span>
+                    <button type="button" onclick="document.getElementById('email').value='dpk.ficus@gmni-unisda.or.id'; document.getElementById('password').focus();" class="text-[#8B0000] hover:underline font-mono text-[10px]">dpk.ficus@gmni-unisda.or.id</button>
+                </div>
+                <div class="flex justify-between items-center py-0.5">
+                    <span>DPK GMNI Brahmana:</span>
+                    <button type="button" onclick="document.getElementById('email').value='dpk.brahmana@gmni-unisda.or.id'; document.getElementById('password').focus();" class="text-[#8B0000] hover:underline font-mono text-[10px]">dpk.brahmana@gmni-unisda.or.id</button>
+                </div>
+            </div>
+            <p class="text-[10px] text-slate-400 mt-2 text-center">Klik email di atas untuk mengisi formulir, lalu ketik kata sandi akun Anda.</p>
         </div>
-        <p class="text-[11px] text-center text-slate-400 mt-2">Password default: <code class="text-slate-600 font-semibold">password123</code></p>
     </div>
 </div>
 

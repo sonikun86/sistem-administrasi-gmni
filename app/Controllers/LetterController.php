@@ -369,8 +369,86 @@ class LetterController
         Auth::requireAuth();
 
         $id = (int)($_GET['id'] ?? 0);
-        View::flash('info', 'Fitur pembuatan & cetak draf surat resmi otomatis sedang dinonaktifkan sementara untuk perancangan ulang. Sistem saat ini berfokus pada pengiriman berkas dan pengarsipan surat.');
-        header('Location: ' . ($id > 0 ? App::baseUrl('letters/show?id=' . $id) : App::baseUrl('letters')));
+        $letterModel = new Letter();
+        $letter = $letterModel->findWithDetails($id);
+
+        if (!$letter) {
+            View::flash('error', 'Surat tidak ditemukan.');
+            header('Location: ' . App::baseUrl('letters'));
+            exit;
+        }
+
+        // Cek izin akses jika user adalah DPK
+        if (Auth::isDpk()) {
+            $dpkId = Auth::dpkId();
+            if ($letter['komisariat_id'] && (int)$letter['komisariat_id'] !== $dpkId && $letter['direction'] === 'masuk') {
+                View::flash('error', 'Anda tidak memiliki akses ke surat DPK lain.');
+                header('Location: ' . App::baseUrl('letters'));
+                exit;
+            }
+        }
+
+        $verifUrl = App::baseUrl('verifikasi?token=' . $letter['verification_token']);
+        $qrSvg = QrCode::svg($verifUrl, 100);
+
+        View::render('letters.print', [
+            'title' => 'Cetak Surat Resmi - ' . ($letter['reference_number'] ?: $letter['tracking_code']),
+            'letter' => $letter,
+            'verifUrl' => $verifUrl,
+            'qrSvg' => $qrSvg,
+        ], null);
+    }
+
+    public function download(): void
+    {
+        Auth::requireAuth();
+
+        $id = (int)($_GET['id'] ?? 0);
+        $letter = (new Letter())->findWithDetails($id);
+
+        if (!$letter || empty($letter['attachment_path'])) {
+            View::flash('error', 'Berkas lampiran tidak ditemukan.');
+            header('Location: ' . App::baseUrl('letters'));
+            exit;
+        }
+
+        // Cek izin akses jika user adalah DPK
+        if (Auth::isDpk()) {
+            $dpkId = Auth::dpkId();
+            if ($letter['komisariat_id'] && (int)$letter['komisariat_id'] !== $dpkId && $letter['direction'] === 'masuk') {
+                View::flash('error', 'Anda tidak memiliki akses ke berkas surat DPK lain.');
+                header('Location: ' . App::baseUrl('letters'));
+                exit;
+            }
+        }
+
+        $filePath = __DIR__ . '/../../public/' . ltrim($letter['attachment_path'], '/');
+        if (!file_exists($filePath)) {
+            $filePath = __DIR__ . '/../../' . ltrim($letter['attachment_path'], '/');
+        }
+
+        if (!file_exists($filePath)) {
+            View::flash('error', 'File berkas fisik tidak ditemukan di server.');
+            header('Location: ' . App::baseUrl('letters/show?id=' . $id));
+            exit;
+        }
+
+        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+        $mimes = [
+            'pdf' => 'application/pdf',
+            'doc' => 'application/msword',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'png' => 'image/png',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+        ];
+        $contentType = $mimes[$extension] ?? 'application/octet-stream';
+        $filename = basename($filePath);
+
+        header('Content-Type: ' . $contentType);
+        header('Content-Length: ' . filesize($filePath));
+        header('Content-Disposition: inline; filename="' . $filename . '"');
+        readfile($filePath);
         exit;
     }
 }
